@@ -1,0 +1,3042 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Mahendra | Spesialis Teknologi & Operasional</title>
+  <!-- FAVICON / SITE ICON -->
+  <link rel="icon" type="image/png" sizes="3000x3000" href="assets/mahendra-logo-transparent-512.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800;900&family=Reenie+Beanie&display=swap"
+    rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(95, 0, 8, 0.34) 0%, rgba(42, 0, 5, 0.22) 28%, transparent 55%),
+        radial-gradient(circle at 15% 48%, rgba(65, 0, 6, 0.18), transparent 42%),
+        radial-gradient(circle at 88% 62%, rgba(70, 0, 8, 0.14), transparent 42%),
+        linear-gradient(180deg, #0b0203 0%, #120304 42%, #070203 100%);
+      background-attachment: fixed;
+      color: #f5f5f5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      margin: 0;
+      max-width: 100vw;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      background: transparent;
+      color: #f5f5f5;
+      cursor: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    .font-syne {
+      font-family: 'Syne', sans-serif;
+    }
+
+    .font-hello {
+      font-family: 'Caveat', cursive;
+    }
+
+    .font-handwriting {
+      font-family: 'Reenie Beanie', cursive;
+    }
+
+    a,
+    button,
+    input,
+    textarea {
+      cursor: none;
+    }
+
+    /* CUSTOM SPIDER-MAN & DYNAMIC CURSOR */
+    #cursor-spider {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      z-index: 99999;
+      opacity: 1;
+      transform: translate(-50%, -50%);
+      transition: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    #cursor-circle {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid rgba(239, 68, 68, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      opacity: .45;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #cursor-circle::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background-color: #ef4444;
+      border-radius: 50%;
+    }
+
+    /* CANVAS INTERACTIVE PARTICLE CURSOR */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9997;
+    }
+
+    /* Background Parallax Zoom saat di-scroll */
+    .bg-zoom-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-zoom-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 22%;
+
+      /* Foto tetap terlihat jelas tanpa opacity 1 penuh */
+      opacity: 0.48;
+
+      /* Filter dibuat sedikit lebih ringan */
+      filter: saturate(0.78) contrast(1.10) brightness(0.76);
+
+      /* Zoom dikontrol oleh JavaScript */
+      transform: translate3d(0, 0, 0) scale(1);
+
+      /* Pertahankan layer GPU */
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+
+      /*
+    Jangan gunakan transition di sini.
+    JavaScript sudah memakai requestAnimationFrame().
+  */
+      transition: none;
+
+      /*
+    Ini yang paling penting untuk mengurangi beban rendering.
+  */
+      mix-blend-mode: normal;
+    }
+
+    .bg-zoom-container::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 52% 26%, rgba(130, 0, 12, 0.30), transparent 30%),
+        radial-gradient(circle at 50% 55%, rgba(78, 0, 7, 0.20), transparent 48%),
+        linear-gradient(90deg, rgba(4, 1, 2, 0.92) 0%, rgba(18, 2, 4, 0.58) 45%, rgba(5, 1, 2, 0.90) 100%),
+        linear-gradient(180deg, rgba(5, 1, 2, 0.50) 0%, rgba(15, 2, 4, 0.58) 50%, #070203 100%);
+    }
+
+    .bg-zoom-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(239, 68, 68, 0.055), transparent 32%),
+        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      background-size: auto, 42px 42px, 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.38), transparent 78%);
+    }
+
+    .glass-card {
+      background: linear-gradient(145deg, rgba(24, 5, 8, 0.76), rgba(7, 3, 5, 0.72));
+      backdrop-filter: blur(18px) saturate(135%);
+      -webkit-backdrop-filter: blur(18px) saturate(135%);
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link.bg-red-600 {
+      background: linear-gradient(135deg, #ef4444, #991b1b) !important;
+      box-shadow: 0 0 22px rgba(239, 68, 68, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .glass-card:hover,
+    .glass-censored-box:hover {
+      border-color: rgba(239, 68, 68, 0.30);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.48), 0 0 30px rgba(239, 68, 68, 0.06);
+    }
+
+    section:not(#about) {
+      position: relative;
+    }
+
+    section:not(#about)::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 80px;
+      height: 1px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.75), transparent);
+    }
+
+    /* Glassmorphism Frosted Box */
+    .glass-censored-box {
+      background: linear-gradient(145deg, rgba(38, 7, 11, 0.48), rgba(10, 3, 5, 0.52));
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    }
+
+
+
+    /* Text Outline Background "HENDRA" Merah Transparan Presisi Center */
+    .text-stroke-red {
+      -webkit-text-stroke: 1.5px rgba(239, 68, 68, 0.35);
+      color: transparent;
+    }
+
+    /* Circular Rotating Text Badge */
+    .rotate-text {
+      animation: spinText 14s linear infinite;
+    }
+
+    @keyframes spinText {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Pendulum Swing Motion */
+    .swing-card {
+      transform-origin: top center;
+      animation: swingMotion 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes swingMotion {
+      0% {
+        transform: rotate(-2deg);
+      }
+
+      100% {
+        transform: rotate(2deg);
+      }
+    }
+
+    /* TALI LANYARD DINAMIS */
+    .lanyard-strap {
+      width: 26px;
+      background: linear-gradient(90deg, #111113 0%, #27272a 50%, #111113 100%);
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+      transform-origin: top center;
+    }
+
+    /* ID CARD UKURAN PROPOSIONAL */
+    .real-id-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
+    }
+
+    .text-stroke-card {
+      -webkit-text-stroke: 1px rgba(0, 0, 0, 0.25);
+      color: transparent;
+    }
+
+    /* ANIMATED BORDER LIGHT EFFECT UNTUK TOMBOL */
+    .animated-border-btn {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      padding: 1.5px;
+      display: inline-block;
+      isolation: isolate;
+    }
+
+    .animated-border-btn::before {
+      content: '';
+      position: absolute;
+      inset: -140%;
+      width: 380%;
+      height: 380%;
+      background: conic-gradient(transparent 0deg, transparent 300deg, rgba(239, 68, 68, .10) 318deg, rgba(239, 68, 68, .65) 333deg, #ff3038 345deg, rgba(239, 68, 68, .18) 353deg, transparent 360deg);
+      animation: rotateBorder 2.8s linear infinite;
+      animation-play-state: running;
+      opacity: .72;
+      transition: opacity .2s ease, filter .2s ease;
+      filter: blur(.15px);
+    }
+
+    .animated-border-btn:hover::before,
+    .animated-border-btn:focus-within::before {
+      animation-play-state: running;
+      opacity: 1;
+      filter: blur(.1px) drop-shadow(0 0 5px rgba(239, 68, 68, .75));
+    }
+
+    @keyframes rotateBorder {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animated-border-btn-content {
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(135deg, #160305, #080203);
+      border-radius: 11px;
+      transition: background .25s ease, box-shadow .25s ease, color .25s ease;
+      height: 100%;
+      width: 100%;
+    }
+
+    .animated-border-btn {
+      box-shadow: 0 0 8px rgba(239, 68, 68, .07);
+    }
+
+    .animated-border-btn:hover,
+    .animated-border-btn:focus-within {
+      box-shadow: 0 0 18px rgba(239, 68, 68, .42), 0 0 38px rgba(239, 68, 68, .18);
+    }
+
+    .animated-border-btn:hover .animated-border-btn-content,
+    .animated-border-btn:focus-within .animated-border-btn-content {
+      background: linear-gradient(135deg, #8f1119, #3a060a);
+      box-shadow: inset 0 0 0 1px rgba(239, 68, 68, .55), 0 0 24px rgba(239, 68, 68, .18);
+    }
+
+    /* FLOATING DOCK BAWAH */
+    .floating-dock {
+      background: linear-gradient(135deg, rgba(27, 5, 8, 0.90), rgba(8, 3, 5, 0.88));
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    }
+
+    /* CINEMATIC BLACK + RED VISUAL LANGUAGE */
+    .red-glow {
+      text-shadow: 0 0 28px rgba(239, 68, 68, 0.22);
+    }
+
+    .section-kicker {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-kicker::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+    }
+
+    .glass-censored-box {
+      transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+    }
+
+    .glass-censored-box:hover {
+      transform: translateY(-2px);
+    }
+
+    .real-id-card {
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.82), 0 0 35px rgba(239, 68, 68, 0.08);
+    }
+
+    .experience-entry {
+      min-width: 0;
+    }
+
+    .experience-year {
+      white-space: nowrap;
+    }
+
+    #contact h2 {
+      max-width: 100%;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .contact-info span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    @media (max-width: 767px) {
+      .collab-title {
+        line-height: 1.02 !important;
+        font-size: clamp(.82rem, 4.8vw, 1.18rem) !important;
+        max-width: 100%;
+        width: 100%;
+        overflow: visible;
+        white-space: normal !important;
+      }
+
+      .collab-mari,
+      .collab-berkolaborasi {
+        display: block !important;
+        width: 100%;
+      }
+
+      .collab-berkolaborasi {
+        margin-left: 0;
+      }
+
+      html {
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+
+      body {
+        padding-bottom: 88px;
+        width: 100%;
+        max-width: 100%;
+        min-height: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: none;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .bg-zoom-img {
+        opacity: 0.14;
+      }
+
+      .bg-zoom-container::after {
+        background:
+          radial-gradient(circle at 50% 22%, rgba(115, 0, 12, 0.24), transparent 34%),
+          linear-gradient(180deg, rgba(5, 1, 2, 0.66), rgba(16, 2, 4, 0.80) 55%, #070203 100%);
+      }
+
+      header {
+        top: 10px !important;
+        width: calc(100% - 20px) !important;
+      }
+
+      header>div:first-child {
+        padding: 9px 11px !important;
+        border-radius: 18px !important;
+      }
+
+      header>div:first-child>a {
+        min-width: 0;
+        padding-right: 8px;
+      }
+
+      header>div:first-child>a span:first-child {
+        font-size: 11px;
+        letter-spacing: .08em;
+      }
+
+      .mobile-nav-menu {
+        max-height: calc(100vh - 92px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+
+      .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 42px;
+      }
+
+      #about {
+        min-height: auto !important;
+        padding-top: 118px !important;
+        padding-bottom: 72px !important;
+      }
+
+      #about>.absolute {
+        top: 24%;
+        font-size: 78px !important;
+        opacity: .16;
+        white-space: nowrap;
+      }
+
+      #about .grid {
+        gap: 2.5rem;
+      }
+
+      #about .lg\:col-span-7 {
+        padding-top: 0 !important;
+      }
+
+      #about h1 {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(1.7rem, 9.2vw, 2.55rem) !important;
+        line-height: .9;
+        letter-spacing: -0.055em;
+        white-space: nowrap;
+        transform: scaleX(.96);
+        transform-origin: left center;
+      }
+
+      #about .lg\:col-span-5 {
+        padding-top: 0 !important;
+        gap: 1.75rem;
+      }
+
+      #about .lg\:col-span-5>.relative {
+        width: min(100%, 18rem);
+        transform: scale(.88);
+        transform-origin: top center;
+        margin-bottom: -18px;
+      }
+
+      #about .lg\:col-span-5>.w-full.max-w-xs {
+        max-width: 100%;
+      }
+
+      #about .flex.flex-wrap.items-center.gap-4 {
+        gap: .65rem;
+      }
+
+      #about .animated-border-btn {
+        width: 100%;
+      }
+
+      #about .animated-border-btn-content {
+        justify-content: center;
+        width: 100%;
+      }
+
+      #about .flex.flex-wrap.items-center.gap-4>.px-4 {
+        width: 100%;
+        justify-content: center;
+      }
+
+      #experience {
+        padding-top: 72px !important;
+        padding-bottom: 72px !important;
+      }
+
+      #experience>div:first-child {
+        margin-bottom: 1.5rem !important;
+      }
+
+      #experience .experience-entry {
+        display: grid !important;
+        grid-template-columns: 40px minmax(0, 1fr);
+        align-items: start;
+        column-gap: .75rem;
+        row-gap: .65rem;
+      }
+
+      #experience .experience-entry>div:first-child {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: start;
+        margin-top: .1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #experience .experience-entry>.flex-grow {
+        grid-column: 2;
+        grid-row: 1;
+        min-width: 0;
+        align-self: start;
+      }
+
+      #experience .experience-year {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+        margin: 0 !important;
+        padding: .38rem .62rem;
+        line-height: 1;
+      }
+
+      #experience .experience-entry h3 {
+        font-size: .92rem;
+        line-height: 1.2;
+      }
+
+      #experience .experience-entry p {
+        overflow-wrap: anywhere;
+      }
+
+      #contact {
+        padding-top: 64px !important;
+        padding-bottom: 34px !important;
+      }
+
+      #contact>div {
+        padding: 1.25rem !important;
+        gap: 1.75rem !important;
+        overflow: hidden;
+      }
+
+      #contact h2 {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(1.05rem, 5.4vw, 1.55rem) !important;
+        line-height: 1;
+        letter-spacing: -.055em;
+        white-space: nowrap;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      #contact .space-y-6 {
+        min-width: 0;
+      }
+
+      #contact .animated-border-btn {
+        max-width: 100%;
+      }
+
+      .contact-info {
+        border-left: 0 !important;
+        border-top: 1px solid rgba(255, 255, 255, .08);
+        padding-left: 0 !important;
+        padding-top: 1.25rem;
+      }
+
+      .floating-dock {
+        max-width: calc(100vw - 28px);
+        padding: 7px;
+        gap: 5px;
+        border-radius: 17px;
+      }
+
+      .floating-dock a {
+        width: 37px !important;
+        height: 37px !important;
+        border-radius: 11px !important;
+      }
+
+      #contactModal {
+        padding: 12px;
+      }
+
+      #contactModal>div {
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+        padding: 1.15rem !important;
+      }
+
+
+      /* Pastikan seluruh halaman mobile tetap menjadi satu alur scroll */
+      section,
+      main,
+      #about,
+      #services,
+      #projects,
+      #leadership,
+      #skills,
+      #experience,
+      #gallery,
+      #contact {
+        overflow: visible !important;
+      }
+
+      .experience-entry,
+      .experience-entry * {
+        min-width: 0;
+      }
+
+      .experience-entry h3,
+      .experience-entry p,
+      .experience-entry span {
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      #particleCanvas,
+      #cursor-spider,
+      #cursor-circle {
+        display: none;
+      }
+
+      a,
+      button,
+      input,
+      textarea {
+        cursor: auto;
+      }
+    }
+
+    /* Mobile: "Mari" di baris pertama, "Berkolaborasi" di baris kedua. */
+    .collab-mari,
+    .collab-berkolaborasi {
+      display: inline;
+    }
+
+    /* FINAL MOBILE SCROLL + TYPOGRAPHY SAFETY */
+    @media (max-width: 767px) {
+      html {
+        scroll-behavior: auto;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+
+      body {
+        overflow-y: auto;
+        overscroll-behavior: none;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #about h1 {
+        font-size: clamp(1.65rem, 8.8vw, 2.45rem) !important;
+        letter-spacing: -0.065em;
+        transform: none;
+        white-space: nowrap;
+      }
+
+      #contact h2 {
+        font-size: clamp(.78rem, 4.6vw, 1.15rem) !important;
+        white-space: normal !important;
+        letter-spacing: -0.055em;
+        line-height: 1.02;
+        width: 100%;
+        max-width: 100%;
+        overflow: visible;
+      }
+
+      #contact h2 .collab-mari,
+      #contact h2 .collab-berkolaborasi {
+        display: block !important;
+        white-space: nowrap;
+      }
+
+      #experience .experience-entry>div:first-child {
+        align-self: start !important;
+        margin-top: .1rem !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="relative min-h-screen selection:bg-red-600 selection:text-white pb-32">
+
+  <!-- CUSTOM SPIDER-MAN & DYNAMIC CURSOR -->
+  <div id="cursor-spider">🕷️</div>
+  <div id="cursor-circle"></div>
+
+  <!-- CANVAS EFEK PARTIKEL KURSOR -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- BACKGROUND Latar Belakang Foto Saya & Efek Zoom saat di-Scroll -->
+  <div class="bg-zoom-container">
+    <img id="bgHero" src="assets/foto-bg.png" alt="Foto Latar Belakang Mahendra" class="bg-zoom-img">
+
+  </div>
+
+  <!-- NAVBAR UTAMA -->
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-7xl overflow-visible">
+    <div class="glass-card px-4 py-2.5 rounded-full flex justify-between items-center shadow-2xl whitespace-nowrap">
+      <a href="#"
+        class="font-syne font-extrabold text-xs sm:text-sm tracking-wider uppercase text-white flex items-center gap-2 pr-4">
+        <span>MAHENDRA</span>
+        <span class="text-gray-400 font-normal hidden lg:inline">/ ADMINISTRASI & OPERASIONAL KANTOR</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-gray-300">
+        <a href="#about" data-target="about"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Tentang</a>
+        <a href="#services" data-target="services"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Layanan</a>
+        <a href="#projects" data-target="projects"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Proyek</a>
+        <a href="#leadership" data-target="leadership"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Kepemimpinan</a>
+        <a href="#skills" data-target="skills"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Keahlian</a>
+        <a href="#experience" data-target="experience"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Pengalaman</a>
+        <a href="#gallery" data-target="gallery"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Galeri</a>
+        <a href="#contact" data-target="contact"
+          class="nav-link px-3 py-1 rounded-full uppercase tracking-wider transition">Kontak</a>
+      </nav>
+
+      <button id="mobileMenuButton" type="button" aria-expanded="false" aria-controls="mobileNavMenu"
+        class="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-zinc-200 flex items-center justify-center transition hover:bg-red-600/20 hover:border-red-500/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500/40">
+        <i id="mobileMenuIcon" class="fa-solid fa-bars text-sm"></i>
+      </button>
+    </div>
+
+    <div id="mobileNavMenu"
+      class="mobile-nav-menu hidden mt-2 glass-card rounded-2xl p-2 border border-white/10 shadow-2xl md:hidden">
+      <nav class="grid grid-cols-1 gap-1 text-[11px] font-semibold text-gray-300">
+        <a href="#about" data-target="about"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Tentang</a>
+        <a href="#services" data-target="services"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Layanan</a>
+        <a href="#projects" data-target="projects"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Proyek</a>
+        <a href="#leadership" data-target="leadership"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Kepemimpinan</a>
+        <a href="#skills" data-target="skills"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Keahlian</a>
+        <a href="#experience" data-target="experience"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Pengalaman</a>
+        <a href="#gallery" data-target="gallery"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Galeri</a>
+        <a href="#contact" data-target="contact"
+          class="nav-link mobile-nav-link px-4 py-3 rounded-xl uppercase tracking-wider transition">Kontak</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="about" class="max-w-7xl mx-auto px-6 relative min-h-screen flex items-center justify-center pt-36 pb-28">
+
+    <div
+      class="absolute left-1/2 top-[30%] -translate-x-1/2 -translate-y-1/2 text-[100px] sm:text-[170px] lg:text-[220px] font-syne font-black tracking-tighter text-stroke-red select-none pointer-events-none z-0 opacity-30">
+      HENDRA
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start w-full relative z-10 my-auto">
+
+      <!-- LEFT SIDE -->
+      <div class="lg:col-span-7 space-y-6 pt-10 lg:pt-16">
+        <p class="font-hello text-3xl sm:text-4xl text-white italic">Halo, Saya</p>
+        <div class="inline-block max-w-full">
+          <h1
+            class="text-4xl sm:text-5xl lg:text-[3.25rem] font-syne font-black tracking-tight text-white uppercase leading-none">
+            MAHENDRA
+          </h1>
+        </div>
+        <p class="text-[11px] sm:text-xs font-bold text-red-500 tracking-wider uppercase leading-relaxed pt-1">
+          STAF ADMINISTRASI • STAF OPERASIONAL • PENGELOLA DATA & LAPORAN • IT SUPPORT
+        </p>
+        <p class="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-xl font-normal pt-1">
+          Lulusan S1 Informatika Institut Teknologi Al Mahrusiyah Kota Kediri dengan keahlian handal dalam administrasi
+          kantor, pengolahan data, penyusunan laporan, koordinasi operasional, serta pemeliharaan sistem IT. Terbiasa
+          mengoperasikan komputer, bekerja secara teliti, mengelola inventaris, dan mendukung kelancaran operasional
+          perusahaan secara profesional.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4 pt-4">
+          <div class="animated-border-btn">
+            <button onclick="openContactModal()"
+              class="animated-border-btn-content px-6 py-3 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-red-600 transition duration-300">
+              <span>HUBUNGI SAYA</span>
+              <i class="fa-solid fa-arrow-right text-xs text-red-400"></i>
+            </button>
+          </div>
+          <div class="animated-border-btn">
+            <a href="assets/CV-Mahendra.pdf" download="CV-Mahendra.pdf"
+              class="animated-border-btn-content px-6 py-3 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-red-600 transition duration-300">
+              <i class="fa-solid fa-file-arrow-down text-red-500"></i>
+              <span>LIHAT CV</span>
+            </a>
+          </div>
+          <div
+            class="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-semibold text-gray-300 flex items-center gap-2">
+            <i class="fa-solid fa-location-dot text-red-500"></i> CIREBON, INDONESIA
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: ID CARD INTERAKTIF DENGAN ROTASI TEKS POSISI UMUM -->
+      <div class="lg:col-span-5 flex flex-col items-center lg:items-end space-y-10 pt-4">
+        <div class="relative w-72 h-[380px] flex flex-col items-center z-50">
+          <div class="absolute top-0 right-[-10px] w-24 h-24 z-20 pointer-events-none">
+            <svg class="w-full h-full rotate-text" viewBox="0 0 100 100">
+              <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+              <text font-size="7.5" font-weight="bold" fill="#ef4444" letter-spacing="1">
+                <textPath href="#circlePath">
+                  ADMINISTRASI • DATA • LAPORAN • OPERASIONAL •
+                </textPath>
+              </text>
+            </svg>
+          </div>
+
+          <div id="lanyardAnchor" class="relative w-full flex flex-col items-center z-30">
+            <div class="w-5 h-2 bg-gradient-to-r from-gray-700 via-gray-300 to-gray-800 rounded-full shadow-md z-30">
+            </div>
+
+            <div id="lanyardStrap"
+              class="lanyard-strap absolute top-1 z-10 flex flex-col items-center justify-start overflow-hidden rounded-t-sm"
+              style="height: 75px;">
+              <div id="lanyardLetters"
+                class="flex flex-col items-center space-y-0.5 pt-1 select-none opacity-90 transition-opacity">
+                <!-- Diisi dinamis via JS -->
+              </div>
+            </div>
+
+            <div id="dragCardWrapper"
+              class="swing-card absolute top-[75px] z-30 flex flex-col items-center cursor-grab active:cursor-grabbing select-none origin-top">
+              <div class="flex flex-col items-center z-20">
+                <div
+                  class="w-4 h-2.5 bg-gradient-to-b from-gray-500 via-gray-200 to-gray-600 rounded-sm border border-gray-400">
+                </div>
+                <div
+                  class="w-3.5 h-5 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-b-md border border-gray-300 shadow flex items-end justify-center pb-0.5">
+                  <div class="w-2 h-2 border-2 border-gray-700 rounded-full"></div>
+                </div>
+              </div>
+
+              <div class="real-id-card w-52 p-3 relative text-black -mt-1">
+                <div
+                  class="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full shadow pointer-events-none animate-bounce z-30">
+                  Tarik Kartu!
+                </div>
+                <div class="w-7 h-1.5 bg-zinc-900 rounded-full mx-auto mb-2 shadow-inner"></div>
+                <div class="aspect-[4/5] rounded-xl overflow-hidden bg-stone-900 relative shadow-inner">
+                  <img src="assets/bg-hero.jpg" alt="Foto Mahendra" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                </div>
+                <div class="relative mt-2 h-8 flex items-center justify-center overflow-hidden px-1">
+                  <span
+                    class="text-lg font-syne font-black text-stroke-card tracking-tight uppercase absolute inset-0 flex items-center justify-center">
+                    MAHENDRA
+                  </span>
+                  <!-- TEKS PERAN BERGANTI-GANTI DENGAN UKURAN PROPOSIONAL -->
+                  <span id="rotatingRoleText"
+                    class="font-handwriting text-[21px] text-black font-bold rotate-[-3deg] relative z-10 transition-all duration-300 whitespace-nowrap">
+                    Staff Administrasi
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full max-w-xs glass-censored-box p-4 rounded-2xl text-left border-red-500/20 relative z-10 mt-16">
+          <p class="text-[11px] text-gray-200 leading-snug flex items-start gap-2">
+            <span class="text-red-500 font-bold text-xs mt-0.5">✦</span>
+            <span>Siap mendukung operasional kantor, rekapitulasi data, laporan berkala, administrasi, dan tata kelola
+              teknologi perusahaan.</span>
+          </p>
+        </div>
+
+        <div class="w-full max-w-xs space-y-4 pt-2 text-left relative z-10">
+          <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+            <div class="text-2xl font-syne font-black text-red-500 tracking-tight">S1</div>
+            <div class="text-[9px] font-bold uppercase tracking-wider text-gray-300 leading-tight">
+              LULUSAN INFORMATIKA <br><span class="text-gray-400">INSTITUT TEKNOLOGI </br> AL-MAHRUSIYAH KOTA
+                KEDIRI</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+            <div class="text-2xl font-syne font-black text-red-500 tracking-tight">5+</div>
+            <div class="text-[9px] font-bold uppercase tracking-wider text-gray-300 leading-tight">
+              PROYEK & LAPORAN<br><span class="text-gray-400">SELESAI DIBANGUN</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-2xl font-syne font-black text-red-500 tracking-tight">2+ THN</div>
+            <div class="text-[9px] font-bold uppercase tracking-wider text-gray-300 leading-tight">
+              PENGALAMAN KOORDINASI<br><span class="text-gray-400">& PELATIHAN TEKNIS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. LAYANAN KEAHLIAN (SERVICES) -->
+  <section id="services" class="py-24 max-w-7xl mx-auto px-6 border-t border-white/10">
+    <div class="mb-14">
+      <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// LAYANAN</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass-card p-8 rounded-2xl flex flex-col justify-between hover:border-red-500/50 transition">
+        <div>
+          <div
+            class="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/30 flex items-center justify-center text-red-500 text-xl mb-6">
+            <i class="fa-solid fa-file-excel"></i>
+          </div>
+          <h3 class="text-lg font-syne font-bold text-white mb-2">Staf Operasional & Administrasi Digital</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Pengolahan data, rekapitulasi laporan, otomatisasi
+            spreadsheet, penyusunan SOP, dan pengelolaan administrasi kantor.</p>
+        </div>
+      </div>
+      <div class="glass-card p-8 rounded-2xl flex flex-col justify-between hover:border-red-500/50 transition">
+        <div>
+          <div
+            class="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/30 flex items-center justify-center text-red-500 text-xl mb-6">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+          <h3 class="text-lg font-syne font-bold text-white mb-2">Pencatatan Inventaris & Pengadaan</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Pencatatan stok barang secara berkala, pengelolaan logistik,
+            dan pendataan inventaris kantor.</p>
+        </div>
+      </div>
+      <div class="glass-card p-8 rounded-2xl flex flex-col justify-between hover:border-red-500/50 transition">
+        <div>
+          <div
+            class="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/30 flex items-center justify-center text-red-500 text-xl mb-6">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="text-lg font-syne font-bold text-white mb-2">Penyusunan Laporan & Data Entry</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Penyusunan laporan berkala, analisis data operasional, dan
+            entri data perusahaan secara teliti.</p>
+        </div>
+      </div>
+      <div class="glass-card p-8 rounded-2xl flex flex-col justify-between hover:border-red-500/50 transition">
+        <div>
+          <div
+            class="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/30 flex items-center justify-center text-red-500 text-xl mb-6">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+          </div>
+          <h3 class="text-lg font-syne font-bold text-white mb-2">Dukungan IT & Pemeliharaan Sistem</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Perawatan berkala, perbaikan perangkat keras/lunak komputer,
+            serta pengelolaan aplikasi penunjang kerja.</p>
+        </div>
+      </div>
+      <div class="glass-card p-8 rounded-2xl flex flex-col justify-between hover:border-red-500/50 transition">
+        <div>
+          <div
+            class="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/30 flex items-center justify-center text-red-500 text-xl mb-6">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <h3 class="text-lg font-syne font-bold text-white mb-2">Koordinasi & Fasilitasi Pelatihan</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Koordinasi antar bagian, pendampingan teknis, serta
+            penyelenggaraan program pelatihan internal maupun eksternal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PROYEK UNGGULAN (PROJECTS) -->
+  <section id="projects" class="py-24 max-w-7xl mx-auto px-6 border-t border-white/10">
+    <div class="mb-14 flex justify-between items-end">
+      <div>
+        <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// PROYEK UNGGULAN (5)</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <a href="https://silajur.vercel.app/" target="_blank"
+        class="group relative rounded-2xl overflow-hidden glass-card p-6 flex flex-col justify-between h-72 border border-white/10 hover:border-red-500/50 transition">
+        <img src="assets/project-silajur.png" alt="SILAJUR"
+          class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div class="relative z-10 flex justify-between items-start">
+          <span class="text-xs font-mono font-bold text-red-400 bg-black/60 px-2 py-0.5 rounded">01</span>
+          <span class="px-2.5 py-1 bg-red-600/80 text-white text-[10px] font-bold rounded-full">LIHAT ↗</span>
+        </div>
+        <div class="relative z-10">
+          <h3 class="text-xl font-syne font-bold text-white">SILAJUR</h3>
+          <p class="text-xs text-zinc-300 mt-1">Sistem Informasi Laporan Jalan Umum Rusak Berbasis AI.</p>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/drive/folders/1wgmTgLeFFXglBKXC3YtJ-WV-hK-suIOa" target="_blank"
+        class="group relative rounded-2xl overflow-hidden glass-card p-6 flex flex-col justify-between h-72 border border-white/10 hover:border-red-500/50 transition">
+        <img src="assets/project-doorlock.jpeg" alt="Smart Door Lock"
+          class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div class="relative z-10 flex justify-between items-start">
+          <span class="text-xs font-mono font-bold text-red-400 bg-black/60 px-2 py-0.5 rounded">02</span>
+          <span class="px-2.5 py-1 bg-red-600/80 text-white text-[10px] font-bold rounded-full">LIHAT ↗</span>
+        </div>
+        <div class="relative z-10">
+          <h3 class="text-xl font-syne font-bold text-white">Smart Door Lock Biometrik</h3>
+          <p class="text-xs text-zinc-300 mt-1">Sistem pencatatan akses keluar masuk pintu otomatis terintegrasi Google
+            Sheets.</p>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/drive/folders/1DLxGUZxdzxMSQgl3Kj78Vk5GjpfycfPD" target="_blank"
+        class="group relative rounded-2xl overflow-hidden glass-card p-6 flex flex-col justify-between h-72 border border-white/10 hover:border-red-500/50 transition">
+        <img src="assets/project-dryg.jpeg" alt="Smart Dry-G"
+          class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div class="relative z-10 flex justify-between items-start">
+          <span class="text-xs font-mono font-bold text-red-400 bg-black/60 px-2 py-0.5 rounded">03</span>
+          <span class="px-2.5 py-1 bg-red-600/80 text-white text-[10px] font-bold rounded-full">LIHAT ↗</span>
+        </div>
+        <div class="relative z-10">
+          <h3 class="text-xl font-syne font-bold text-white">Smart Dry-G</h3>
+          <p class="text-xs text-zinc-300 mt-1">Alat pengering gabah otomatis berdasarkan cuaca berbasis IoT.</p>
+        </div>
+      </a>
+
+      <a href="https://github.com/marhaend86/WRO2025-FutureEngineer-VIM" target="_blank"
+        class="group relative rounded-2xl overflow-hidden glass-card p-6 flex flex-col justify-between h-72 border border-white/10 hover:border-red-500/50 transition">
+        <img src="assets/project-car.jpeg" alt="Autonomous Robot"
+          class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div class="relative z-10 flex justify-between items-start">
+          <span class="text-xs font-mono font-bold text-red-400 bg-black/60 px-2 py-0.5 rounded">04</span>
+          <span class="px-2.5 py-1 bg-red-600/80 text-white text-[10px] font-bold rounded-full">LIHAT ↗</span>
+        </div>
+        <div class="relative z-10">
+          <h3 class="text-xl font-syne font-bold text-white">Autonomous Robot</h3>
+          <p class="text-xs text-zinc-300 mt-1">Pengembangan sistem navigasi robot cerdas dan pengujian performa.</p>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/drive/folders/1nabqUtUZqRXfNc5ZZH2I0xb2SX5DjQLh" target="_blank"
+        class="group relative rounded-2xl overflow-hidden glass-card p-6 flex flex-col justify-between h-72 border border-white/10 hover:border-red-500/50 transition">
+        <img src="assets/bot.jpeg" alt="stokKU"
+          class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div class="relative z-10 flex justify-between items-start">
+          <span class="text-xs font-mono font-bold text-red-400 bg-black/60 px-2 py-0.5 rounded">05</span>
+          <span class="px-2.5 py-1 bg-red-600/80 text-white text-[10px] font-bold rounded-full">LIHAT ↗</span>
+        </div>
+        <div class="relative z-10">
+          <h3 class="text-xl font-syne font-bold text-white">StokKu</h3>
+          <p class="text-xs text-zinc-300 mt-1">Bot WhatsApp otomatis untuk pengecekan stok barang dan informasi 24/7.
+          </p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- 3. KEPEMIMPINAN (LEADERSHIP) -->
+  <section id="leadership" class="py-24 max-w-7xl mx-auto px-6 border-t border-white/10">
+    <div class="mb-14">
+      <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// KEPEMIMPINAN</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass-card p-6 rounded-2xl border border-white/10">
+        <span class="text-xs text-red-500 font-mono font-bold">PEMBIMBING TIM</span>
+        <h3 class="text-lg font-syne font-bold text-white mt-1">Make X Robotics Competition 2024</h3>
+        <p class="text-xs text-zinc-400 mt-2">Mengelola koordinasi persiapan tim dan memimpin penyusunan laporan
+          evaluasi untuk delegasi kejuaraan tingkat nasional.</p>
+      </div>
+      <div class="glass-card p-6 rounded-2xl border border-white/10">
+        <span class="text-xs text-red-500 font-mono font-bold">PEMBIMBING TIM</span>
+        <h3 class="text-lg font-syne font-bold text-white mt-1">Robofest National Competition 2024</h3>
+        <p class="text-xs text-zinc-400 mt-2">Mengarahkan strategi perancangan robot serta mengelola persiapan
+          administrasi teknis untuk memastikan kesiapan tim.</p>
+      </div>
+      <div class="glass-card p-6 rounded-2xl border border-white/10">
+        <span class="text-xs text-red-500 font-mono font-bold">PELATIH TIM</span>
+        <h3 class="text-lg font-syne font-bold text-white mt-1">KOSSMI 2025</h3>
+        <p class="text-xs text-zinc-400 mt-2">Mengkoordinasikan pendampingan teknis dan pelatihan intensif di bidang
+          riset sains serta teknologi terapan.</p>
+      </div>
+      <div class="glass-card p-6 rounded-2xl border border-white/10">
+        <span class="text-xs text-red-500 font-mono font-bold">PENASIHAT TEKNIS</span>
+        <h3 class="text-lg font-syne font-bold text-white mt-1">WRO (World Robot Olympiad) 2025</h3>
+        <p class="text-xs text-zinc-400 mt-2">Memimpin persiapan teknis dan membimbing peserta didik untuk bersaing di
+          ajang kompetisi robotika tingkat nasional.</p>
+      </div>
+      <div class="glass-card p-6 rounded-2xl border border-white/10">
+        <span class="text-xs text-red-500 font-mono font-bold">PEMBIMBING UTAMA</span>
+        <h3 class="text-lg font-syne font-bold text-white mt-1">Robofest National Competition 2026</h3>
+        <p class="text-xs text-zinc-400 mt-2">Memimpin manajemen operasional, menyelaraskan koordinasi jadwal, dan
+          mengevaluasi performa keseluruhan tim.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. KEAHLIAN (SKILLS) -->
+  <section id="skills" class="py-24 max-w-7xl mx-auto px-6 border-t border-white/10">
+    <div class="mb-14 text-left">
+      <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// KEAHLIAN</span>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+
+      <!-- Microsoft Word -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/vscode-icons/file-type-word.svg" alt="Microsoft Word"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Microsoft Word</span>
+      </div>
+
+      <!-- Microsoft Excel -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/vscode-icons/file-type-excel.svg" alt="Microsoft Excel"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Microsoft Excel</span>
+      </div>
+
+      <!-- Microsoft PowerPoint -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/vscode-icons/file-type-powerpoint.svg" alt="PowerPoint"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">PowerPoint</span>
+      </div>
+
+      <!-- Google Docs -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png" alt="Google Docs"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Google Docs</span>
+      </div>
+
+      <!-- Google Sheets -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://www.gstatic.com/images/branding/product/1x/sheets_2020q4_48dp.png" alt="Google Sheets"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Google Sheets</span>
+      </div>
+
+      <!-- Google Slides -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://www.gstatic.com/images/branding/product/1x/slides_2020q4_48dp.png" alt="Google Slides"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Google Slides</span>
+      </div>
+
+      <!-- Google Forms -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://www.gstatic.com/images/branding/product/1x/forms_2020q4_48dp.png" alt="Google Forms"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Google Forms</span>
+      </div>
+
+      <!-- Google Drive -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/logos/google-drive.svg" alt="Google Drive" class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Google Drive</span>
+      </div>
+
+      <!-- Canva -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://logo-teka.com/wp-content/uploads/2025/09/canva-icon-logo.png" alt="Canva"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Canva</span>
+      </div>
+
+      <!-- C++ -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/simple-icons/cplusplus.svg?color=%2300599C" alt="C++"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">C++</span>
+      </div>
+
+      <!-- Arduino -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/simple-icons/arduino.svg?color=%2300979D" alt="Arduino"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Arduino</span>
+      </div>
+
+      <!-- Visual Studio Code -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/logos/visual-studio-code.svg" alt="Visual Studio Code"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">VS Code</span>
+      </div>
+
+      <!-- ChatGPT -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/simple-icons/openai.svg?color=%23FFFFFF" alt="ChatGPT"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">ChatGPT</span>
+      </div>
+
+      <!-- Gemini -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Google-gemini.svg" alt="Gemini"
+          class="w-9 h-9 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Gemini</span>
+      </div>
+
+      <!-- Claude -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude-ai/default.svg" alt="Claude"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Claude</span>
+      </div>
+
+      <!-- Instalasi Windows -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/mdi/microsoft-windows.svg?color=%2300A4EF" alt="Instalasi Windows"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Instalasi Windows</span>
+      </div>
+
+      <!-- PC Troubleshooting -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/mdi/desktop-tower-monitor.svg?color=%23FFFFFF" alt="PC Troubleshooting"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">PC Troubleshooting</span>
+      </div>
+
+      <!-- Computer Repair -->
+      <div
+        class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2.5 hover:border-red-500/50 transition">
+        <img src="https://api.iconify.design/mdi/tools.svg?color=%23FFFFFF" alt="Computer Repair"
+          class="w-8 h-8 object-contain">
+        <span class="text-[11px] font-bold text-zinc-300">Computer Repair</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PENGALAMAN & AKADEMIK (EXPERIENCE) -->
+  <section id="experience" class="py-24 max-w-7xl mx-auto px-6 border-t border-white/10">
+    <div class="mb-14">
+      <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// PENGALAMAN</span>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- SISI KIRI: 1 BOX UTUH BERISI AKADEMIK DAN PENGALAMAN KERJA -->
+      <div class="lg:col-span-7 glass-card p-6 rounded-2xl border border-white/10 space-y-6">
+
+        <!-- BAGIAN 1: PENDIDIKAN & AKADEMIK -->
+        <div class="space-y-4">
+          <span class="text-xs text-red-500 font-mono font-bold tracking-wider uppercase">Pendidikan</span>
+
+          <div
+            class="experience-entry p-4 bg-black/40 border border-white/10 rounded-xl flex items-center justify-between gap-4">
+            <div
+              class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 flex-shrink-0">
+              <img src="https://api.iconify.design/zmdi/graduation-cap.svg?color=%23FFFFFF" alt="S1 Informatika"
+                class="w-6 h-6 object-contain">
+            </div>
+            <div class="flex-grow">
+              <span class="text-[10px] text-zinc-400 font-mono font-bold">STRATA 1 (S1)</span>
+              <h3 class="text-base font-syne font-bold text-white">S1 Informatika</h3>
+              <p class="text-[11px] text-zinc-400">Institut Teknologi Al Mahrusiyah Kediri</p>
+            </div>
+            <div
+              class="experience-year text-xs font-mono font-bold text-red-400 bg-red-600/10 border border-red-500/30 px-3 py-1.5 rounded-lg flex-shrink-0">
+              2022 - 2026
+            </div>
+          </div>
+        </div>
+
+        <!-- PEMISAH -->
+        <div class="border-t border-white/10 pt-2"></div>
+
+        <!-- BAGIAN 2: PENGALAMAN KERJA & PDUKASI -->
+        <div class="space-y-4">
+          <span class="text-xs text-red-500 font-mono font-bold tracking-wider uppercase">Pengalaman Kerja &
+            Edukasi</span>
+
+          <div
+            class="experience-entry p-4 bg-black/40 border border-white/10 rounded-xl flex items-center justify-between gap-4">
+            <div
+              class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 flex-shrink-0">
+              <img src="https://api.iconify.design/mdi/human-male-board.svg?color=%23FFFFFF"
+                alt="Instruktur Robotika & IoT" class="w-6 h-6 object-contain">
+            </div>
+            <div class="flex-grow">
+              <span class="text-[10px] text-zinc-400 font-mono font-bold">PENGALAMAN KERJA</span>
+              <h3 class="text-base font-syne font-bold text-white">Instruktur Coding, Robotika & IoT</h3>
+              <p class="text-[11px] text-zinc-400">Ruang Robot Kediri — Mengajar dan membimbing pembelajaran robotika,
+                IoT, dan pemrograman berbasis proyek serta mendampingi proses perakitan dan pengujian proyek.</p>
+            </div>
+            <div
+              class="experience-year text-xs font-mono font-bold text-red-400 bg-red-600/10 border border-red-500/30 px-3 py-1.5 rounded-lg flex-shrink-0">
+              2024 - 2026
+            </div>
+          </div>
+
+          <div
+            class="experience-entry p-4 bg-black/40 border border-white/10 rounded-xl flex items-center justify-between gap-4">
+            <div
+              class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 flex-shrink-0">
+              <img src="https://api.iconify.design/mdi/account-multiple.svg?color=%23FFFFFF"
+                alt="Asisten Mentor Workshop GTK" class="w-6 h-6 object-contain">
+            </div>
+            <div class="flex-grow">
+              <span class="text-[10px] text-zinc-400 font-mono font-bold">PENDAMPINGAN & WORKSHOP</span>
+              <h3 class="text-base font-syne font-bold text-white">Asisten Mentor Workshop GTK</h3>
+              <p class="text-[11px] text-zinc-400">SMPN 3 Kediri — Mendampingi pelaksanaan workshop teknologi bagi guru
+                serta membantu penyampaian materi, praktik, dan penggunaan perangkat pembelajaran.</p>
+            </div>
+            <div
+              class="experience-year text-xs font-mono font-bold text-red-400 bg-red-600/10 border border-red-500/30 px-3 py-1.5 rounded-lg flex-shrink-0">
+              2025
+            </div>
+          </div>
+
+          <div
+            class="experience-entry p-4 bg-black/40 border border-white/10 rounded-xl flex items-center justify-between gap-4">
+            <div
+              class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 flex-shrink-0">
+              <div
+                class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/10 flex items-center justify-center flex-shrink-0">
+                <img src="https://api.iconify.design/mdi/robot-industrial.svg?color=%23FFFFFF"
+                  alt="Mentor Workshop Praktikum" class="w-6 h-6 object-contain">
+              </div>
+            </div>
+            <div class="flex-grow">
+              <span class="text-[10px] text-zinc-400 font-mono font-bold">PRAKTIKUM KAMPUS</span>
+              <h3 class="text-base font-syne font-bold text-white">Mentor Workshop Praktikum Robotik</h3>
+              <p class="text-[11px] text-zinc-400">Institut Teknologi Al Mahrusiyah Kediri — Membimbing praktikum
+                robotika dan teknologi melalui praktik langsung, perakitan, pemrograman, serta pengujian proyek.</p>
+            </div>
+            <div
+              class="experience-year text-xs font-mono font-bold text-red-400 bg-red-600/10 border border-red-500/30 px-3 py-1.5 rounded-lg flex-shrink-0">
+              2024
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SISI KANAN: PROFIL & SOSIAL -->
+      <div class="lg:col-span-5 glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+        <span class="text-xs text-red-500 font-mono font-bold">PROFIL & SOSIAL</span>
+
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com/in/mahendra-hendra-ab4185390" target="_blank" rel="noopener noreferrer"
+          class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl hover:border-red-500 transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-linkedin text-white text-lg"></i>
+            <div>
+              <h4 class="text-xs font-bold text-white">LINKEDIN</h4>
+              <p class="text-[10px] text-zinc-400">linkedin.com/in/mahendra-hendra-ab4185390</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-zinc-500"></i>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/mahendra284des" target="_blank" rel="noopener noreferrer"
+          class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl hover:border-red-500 transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-github text-white text-lg"></i>
+            <div>
+              <h4 class="text-xs font-bold text-white">GITHUB</h4>
+              <p class="text-[10px] text-zinc-400">github.com/mahendra284des</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-zinc-500"></i>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://instagram.com/_mahendra284" target="_blank" rel="noopener noreferrer"
+          class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl hover:border-red-500 transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-instagram text-white text-lg"></i>
+            <div>
+              <h4 class="text-xs font-bold text-white">INSTAGRAM</h4>
+              <p class="text-[10px] text-zinc-400">@_mahendra284</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-zinc-500"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. GALERI -->
+  <section id="gallery" class="py-24 max-w-7xl mx-auto px-6 border-t border-white/10">
+
+    <div class="mb-14">
+      <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// GALERI</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- =========================
+         WORKSHOP & PELATIHAN
+    ========================== -->
+      <div
+        class="gallery-card group relative rounded-2xl overflow-hidden glass-card p-4 border border-white/10 hover:border-red-500/50 transition"
+        data-gallery="workshop" data-title="WORKSHOP & PELATIHAN"
+        data-description="Dokumentasi saat memberikan bimbingan teknis.">
+        <button type="button" class="gallery-trigger relative block w-full text-left cursor-zoom-in"
+          aria-label="Buka galeri Workshop & Pelatihan">
+          <div class="gallery-frame aspect-video rounded-xl overflow-hidden bg-zinc-900 relative">
+
+            <!-- FOTO UTAMA -->
+            <img src="assets/workshop-1.png" alt="Workshop & Pelatihan"
+              class="gallery-photo gallery-photo-a absolute inset-0 w-full h-full object-cover">
+
+            <!-- FOTO BERIKUTNYA -->
+            <img src="" alt="" class="gallery-photo gallery-photo-b absolute inset-0 w-full h-full object-cover">
+
+            <!-- OVERLAY -->
+            <div
+              class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 pointer-events-none">
+            </div>
+
+            <!-- ICON ZOOM -->
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">
+              <div
+                class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                <i class="fa-solid fa-expand text-white text-sm"></i>
+              </div>
+            </div>
+
+            <!-- COUNTER -->
+            <span
+              class="absolute top-2 right-2 z-20 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+              FOTO <span class="gallery-counter">1/5</span>
+            </span>
+
+          </div>
+        </button>
+
+        <h3 class="text-sm font-syne font-bold text-white mt-3">
+          WORKSHOP & PELATIHAN
+        </h3>
+
+        <p class="text-[11px] text-zinc-400 mt-1">
+          Dokumentasi saat memberikan bimbingan teknis.
+        </p>
+      </div>
+
+
+      <!-- =========================
+         ROBOTIKA & PERANGKAT KERAS
+    ========================== -->
+      <div
+        class="gallery-card group relative rounded-2xl overflow-hidden glass-card p-4 border border-white/10 hover:border-red-500/50 transition"
+        data-gallery="robotics" data-title="ROBOTIKA & PERANGKAT KERAS"
+        data-description="Perakitan dan pengujian sistem teknologi cerdas.">
+        <button type="button" class="gallery-trigger relative block w-full text-left cursor-zoom-in"
+          aria-label="Buka galeri Robotika & Perangkat Keras">
+          <div class="gallery-frame aspect-video rounded-xl overflow-hidden bg-zinc-900 relative">
+
+            <!-- FOTO UTAMA -->
+            <img src="assets/robotics-1.png" alt="Robotika & Perangkat Keras"
+              class="gallery-photo gallery-photo-a absolute inset-0 w-full h-full object-cover">
+
+            <!-- FOTO BERIKUTNYA -->
+            <img src="" alt="" class="gallery-photo gallery-photo-b absolute inset-0 w-full h-full object-cover">
+
+            <!-- OVERLAY -->
+            <div
+              class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 pointer-events-none">
+            </div>
+
+            <!-- ICON ZOOM -->
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">
+              <div
+                class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                <i class="fa-solid fa-expand text-white text-sm"></i>
+              </div>
+            </div>
+
+            <!-- COUNTER -->
+            <span
+              class="absolute top-2 right-2 z-20 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+              FOTO <span class="gallery-counter">1/5</span>
+            </span>
+
+          </div>
+        </button>
+
+        <h3 class="text-sm font-syne font-bold text-white mt-3">
+          ROBOTIKA & PERANGKAT KERAS
+        </h3>
+
+        <p class="text-[11px] text-zinc-400 mt-1">
+          Perakitan dan pengujian sistem teknologi cerdas.
+        </p>
+      </div>
+
+
+      <!-- =========================
+         KELAS KODING
+    ========================== -->
+      <div
+        class="gallery-card group relative rounded-2xl overflow-hidden glass-card p-4 border border-white/10 hover:border-red-500/50 transition"
+        data-gallery="coding" data-title="KELAS KODING"
+        data-description="Mengajar logika pemrograman dan literasi digital.">
+        <button type="button" class="gallery-trigger relative block w-full text-left cursor-zoom-in"
+          aria-label="Buka galeri Kelas Koding">
+          <div class="gallery-frame aspect-video rounded-xl overflow-hidden bg-zinc-900 relative">
+
+            <!-- FOTO UTAMA -->
+            <img src="assets/coding-1.png" alt="Kelas Koding"
+              class="gallery-photo gallery-photo-a absolute inset-0 w-full h-full object-cover">
+
+            <!-- FOTO BERIKUTNYA -->
+            <img src="" alt="" class="gallery-photo gallery-photo-b absolute inset-0 w-full h-full object-cover">
+
+            <!-- OVERLAY -->
+            <div
+              class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 pointer-events-none">
+            </div>
+
+            <!-- ICON ZOOM -->
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">
+              <div
+                class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                <i class="fa-solid fa-expand text-white text-sm"></i>
+              </div>
+            </div>
+
+            <!-- COUNTER -->
+            <span
+              class="absolute top-2 right-2 z-20 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+              FOTO <span class="gallery-counter">1/5</span>
+            </span>
+
+          </div>
+        </button>
+
+        <h3 class="text-sm font-syne font-bold text-white mt-3">
+          KELAS KODING
+        </h3>
+
+        <p class="text-[11px] text-zinc-400 mt-1">
+          Mengajar logika pemrograman dan literasi digital.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================
+     FULLSCREEN LIGHTBOX
+========================= -->
+  <div id="galleryLightbox" class="fixed inset-0 z-[9999] hidden bg-black/95 backdrop-blur-md" role="dialog"
+    aria-modal="true" aria-label="Galeri foto">
+
+    <!-- CLOSE -->
+    <button id="galleryClose" type="button"
+      class="absolute top-5 right-5 z-30 w-11 h-11 rounded-full bg-white/10 hover:bg-red-600 border border-white/10 flex items-center justify-center text-white transition"
+      aria-label="Tutup">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- PREVIOUS -->
+    <button id="galleryPrev" type="button"
+      class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-red-600 border border-white/10 flex items-center justify-center text-white transition"
+      aria-label="Foto sebelumnya">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <!-- NEXT -->
+    <button id="galleryNext" type="button"
+      class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-red-600 border border-white/10 flex items-center justify-center text-white transition"
+      aria-label="Foto berikutnya">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- FOTO BESAR -->
+    <div class="w-full h-full flex flex-col items-center justify-center px-16 md:px-24 py-16">
+
+      <img id="lightboxImage" src="" alt=""
+        class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl select-none">
+
+      <div class="text-center mt-5">
+
+        <h3 id="lightboxTitle" class="text-sm md:text-base font-syne font-bold text-white"></h3>
+
+        <p id="lightboxDescription" class="text-[11px] text-zinc-400 mt-1"></p>
+
+        <div id="lightboxCounter" class="text-[10px] font-mono font-bold text-red-400 mt-3"></div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      /* ==========================================
+         SEMUA FOTO HARUS PNG
+      ========================================== */
+
+      const galleries = {
+
+        workshop: [
+          "assets/workshop-1.png",
+          "assets/workshop-2.png",
+          "assets/workshop-3.png",
+          "assets/workshop-4.png",
+          "assets/workshop-5.png"
+        ],
+
+        robotics: [
+          "assets/robotics-1.png",
+          "assets/robotics-2.png",
+          "assets/robotics-3.png",
+          "assets/robotics-4.png",
+          "assets/robotics-5.png"
+        ],
+
+        coding: [
+          "assets/coding-1.png",
+          "assets/coding-2.png",
+          "assets/coding-3.png",
+          "assets/coding-4.png",
+          "assets/coding-5.png"
+        ]
+
+      };
+
+
+      /* ==========================================
+         LIGHTBOX ELEMENT
+      ========================================== */
+
+      const lightbox =
+        document.getElementById("galleryLightbox");
+
+      const lightboxImage =
+        document.getElementById("lightboxImage");
+
+      const lightboxTitle =
+        document.getElementById("lightboxTitle");
+
+      const lightboxDescription =
+        document.getElementById("lightboxDescription");
+
+      const lightboxCounter =
+        document.getElementById("lightboxCounter");
+
+      const closeButton =
+        document.getElementById("galleryClose");
+
+      const prevButton =
+        document.getElementById("galleryPrev");
+
+      const nextButton =
+        document.getElementById("galleryNext");
+
+
+      /* ==========================================
+         STATE
+      ========================================== */
+
+      let activeGallery = null;
+      let activeIndex = 0;
+      let activeCard = null;
+
+
+      /* ==========================================
+         PRELOAD FOTO
+      ========================================== */
+
+      Object.keys(galleries).forEach(function (galleryName) {
+
+        galleries[galleryName].forEach(function (src) {
+
+          const img = new Image();
+
+          img.src = src;
+
+        });
+
+      });
+
+
+      /* ==========================================
+         SETUP SETIAP CARD
+      ========================================== */
+
+      document.querySelectorAll(".gallery-card").forEach(function (card) {
+
+        const galleryName =
+          card.dataset.gallery;
+
+        const images =
+          galleries[galleryName];
+
+        if (!images || images.length === 0) {
+          return;
+        }
+
+
+        const photoA =
+          card.querySelector(".gallery-photo-a");
+
+        const photoB =
+          card.querySelector(".gallery-photo-b");
+
+        const counter =
+          card.querySelector(".gallery-counter");
+
+        const trigger =
+          card.querySelector(".gallery-trigger");
+
+
+        let currentIndex = 0;
+
+        let showingA = true;
+
+        let timer = null;
+
+        let isAnimating = false;
+
+
+        counter.textContent =
+          "1/" + images.length;
+
+
+        /* ======================================
+           FUNGSI GANTI FOTO
+        ====================================== */
+
+        function changePhoto() {
+
+          if (isAnimating) {
+            return;
+          }
+
+          isAnimating = true;
+
+
+          const nextIndex =
+            (currentIndex + 1) % images.length;
+
+
+          const currentPhoto =
+            showingA ? photoA : photoB;
+
+          const nextPhoto =
+            showingA ? photoB : photoA;
+
+
+          /*
+           FOTO BERIKUTNYA DISIAPKAN
+           DI SEBELAH KANAN
+          */
+
+          nextPhoto.src =
+            images[nextIndex];
+
+          nextPhoto.classList.remove(
+            "gallery-enter"
+          );
+
+          nextPhoto.classList.add(
+            "gallery-ready"
+          );
+
+
+          /*
+           Pastikan browser sudah
+           menerapkan posisi awal
+          */
+
+          requestAnimationFrame(function () {
+
+            requestAnimationFrame(function () {
+
+              /*
+               FOTO LAMA:
+               keluar ke kiri + fade
+              */
+
+              currentPhoto.classList.add(
+                "gallery-exit"
+              );
+
+
+              /*
+               FOTO BARU:
+               masuk dari kanan + fade in
+              */
+
+              nextPhoto.classList.remove(
+                "gallery-ready"
+              );
+
+              nextPhoto.classList.add(
+                "gallery-enter"
+              );
+
+            });
+
+          });
+
+
+          /*
+           Setelah animasi selesai
+          */
+
+          setTimeout(function () {
+
+            currentIndex =
+              nextIndex;
+
+            showingA =
+              !showingA;
+
+
+            currentPhoto.classList.remove(
+              "gallery-exit"
+            );
+
+            nextPhoto.classList.remove(
+              "gallery-enter"
+            );
+
+
+            counter.textContent =
+              (currentIndex + 1) +
+              "/" +
+              images.length;
+
+
+            isAnimating = false;
+
+          }, 650);
+
+        }
+
+
+        /* ======================================
+           AUTOPLAY
+           4 DETIK
+        ====================================== */
+
+        function startSlideshow() {
+
+          stopSlideshow();
+
+          timer =
+            setInterval(
+              changePhoto,
+              4000
+            );
+
+        }
+
+
+        function stopSlideshow() {
+
+          if (timer) {
+
+            clearInterval(timer);
+
+            timer = null;
+
+          }
+
+        }
+
+
+        /* ======================================
+           SIMPAN DATA CARD
+        ====================================== */
+
+        card.getGalleryIndex =
+          function () {
+
+            return currentIndex;
+
+          };
+
+
+        card.stopGallery =
+          stopSlideshow;
+
+
+        card.startGallery =
+          startSlideshow;
+
+
+        /* ======================================
+           MULAI AUTOPLAY
+        ====================================== */
+
+        startSlideshow();
+
+
+        /* ======================================
+           KLIK FOTO
+        ====================================== */
+
+        trigger.addEventListener(
+          "click",
+          function () {
+
+            activeGallery =
+              galleryName;
+
+            activeIndex =
+              currentIndex;
+
+            activeCard =
+              card;
+
+            stopSlideshow();
+
+            openLightbox();
+
+          }
+        );
+
+      });
+
+
+      /* ==========================================
+         OPEN LIGHTBOX
+      ========================================== */
+
+      function openLightbox() {
+
+        lightbox.classList.remove(
+          "hidden"
+        );
+
+        document.body.style.overflow =
+          "hidden";
+
+        updateLightbox();
+
+      }
+
+
+      /* ==========================================
+         UPDATE LIGHTBOX
+      ========================================== */
+
+      function updateLightbox() {
+
+        if (!activeGallery) {
+          return;
+        }
+
+
+        const images =
+          galleries[activeGallery];
+
+        if (!images) {
+          return;
+        }
+
+
+        lightboxImage.style.opacity =
+          "0";
+
+
+        setTimeout(function () {
+
+          lightboxImage.src =
+            images[activeIndex];
+
+          lightboxImage.alt =
+            activeCard.dataset.title;
+
+          lightboxTitle.textContent =
+            activeCard.dataset.title;
+
+          lightboxDescription.textContent =
+            activeCard.dataset.description;
+
+          lightboxCounter.textContent =
+            (activeIndex + 1) +
+            " / " +
+            images.length;
+
+
+          lightboxImage.style.opacity =
+            "1";
+
+        }, 120);
+
+      }
+
+
+      /* ==========================================
+         NEXT
+      ========================================== */
+
+      function nextImage() {
+
+        if (!activeGallery) {
+          return;
+        }
+
+
+        const images =
+          galleries[activeGallery];
+
+
+        activeIndex =
+          (activeIndex + 1) %
+          images.length;
+
+
+        updateLightbox();
+
+      }
+
+
+      /* ==========================================
+         PREVIOUS
+      ========================================== */
+
+      function previousImage() {
+
+        if (!activeGallery) {
+          return;
+        }
+
+
+        const images =
+          galleries[activeGallery];
+
+
+        activeIndex =
+          (
+            activeIndex -
+            1 +
+            images.length
+          ) %
+          images.length;
+
+
+        updateLightbox();
+
+      }
+
+
+      /* ==========================================
+         CLOSE
+      ========================================== */
+
+      function closeLightbox() {
+
+        lightbox.classList.add(
+          "hidden"
+        );
+
+        document.body.style.overflow =
+          "";
+
+
+        if (activeCard) {
+
+          activeCard.startGallery();
+
+        }
+
+
+        activeGallery =
+          null;
+
+        activeIndex =
+          0;
+
+        activeCard =
+          null;
+
+      }
+
+
+      /* ==========================================
+         BUTTON
+      ========================================== */
+
+      closeButton.addEventListener(
+        "click",
+        closeLightbox
+      );
+
+
+      nextButton.addEventListener(
+        "click",
+        nextImage
+      );
+
+
+      prevButton.addEventListener(
+        "click",
+        previousImage
+      );
+
+
+      /* ==========================================
+         KEYBOARD
+      ========================================== */
+
+      document.addEventListener(
+        "keydown",
+        function (event) {
+
+          if (
+            lightbox.classList.contains(
+              "hidden"
+            )
+          ) {
+            return;
+          }
+
+
+          if (
+            event.key === "Escape"
+          ) {
+
+            closeLightbox();
+
+          }
+
+
+          if (
+            event.key === "ArrowRight"
+          ) {
+
+            nextImage();
+
+          }
+
+
+          if (
+            event.key === "ArrowLeft"
+          ) {
+
+            previousImage();
+
+          }
+
+        }
+      );
+
+
+      /* ==========================================
+         KLIK AREA HITAM
+      ========================================== */
+
+      lightbox.addEventListener(
+        "click",
+        function (event) {
+
+          if (
+            event.target === lightbox
+          ) {
+
+            closeLightbox();
+
+          }
+
+        }
+      );
+
+    });
+  </script>
+
+
+  <style>
+    /* ==========================================
+   FRAME GALERI
+========================================== */
+
+    .gallery-frame {
+      position: relative;
+      overflow: hidden;
+    }
+
+
+    /* ==========================================
+   SEMUA FOTO
+========================================== */
+
+    .gallery-photo {
+
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.6s ease,
+        opacity 0.6s ease;
+
+    }
+
+
+    /* ==========================================
+   FOTO YANG SEDANG AKTIF
+========================================== */
+
+    .gallery-photo-a {
+      z-index: 2;
+    }
+
+
+    /* ==========================================
+   FOTO CADANGAN
+========================================== */
+
+    .gallery-photo-b {
+      z-index: 1;
+    }
+
+
+    /* ==========================================
+   POSISI AWAL FOTO BARU
+   DATANG DARI KANAN
+========================================== */
+
+    .gallery-ready {
+
+      opacity: 0;
+
+      transform:
+        translateX(100%);
+
+    }
+
+
+    /* ==========================================
+   FOTO BARU MASUK
+========================================== */
+
+    .gallery-enter {
+
+      opacity: 1;
+
+      transform:
+        translateX(0);
+
+    }
+
+
+    /* ==========================================
+   FOTO LAMA KELUAR
+========================================== */
+
+    .gallery-exit {
+
+      opacity: 0;
+
+      transform:
+        translateX(-100%);
+
+    }
+
+
+    /* ==========================================
+   LIGHTBOX
+========================================== */
+
+    #galleryLightbox {
+
+      animation:
+        galleryFadeIn 0.25s ease;
+
+    }
+
+
+    #lightboxImage {
+
+      opacity: 1;
+
+      transition:
+        opacity 0.3s ease;
+
+    }
+
+
+    @keyframes galleryFadeIn {
+
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+
+    }
+
+
+    /* ==========================================
+   MOBILE
+========================================== */
+
+    @media (max-width: 640px) {
+
+      #lightboxImage {
+
+        max-height: 65vh;
+
+      }
+
+    }
+
+
+    /* ==========================================
+   REDUCED MOTION
+========================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .gallery-photo,
+      #lightboxImage,
+      #galleryLightbox {
+
+        transition: none;
+
+        animation: none;
+
+      }
+
+    }
+  </style>
+
+  <!-- 7. KONTAK & FOOTER -->
+  <section id="contact" class="pt-24 pb-12 max-w-7xl mx-auto px-6 border-t border-white/10">
+    <div
+      class="glass-card p-8 sm:p-12 rounded-3xl border border-red-500/20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="space-y-6">
+        <div>
+          <span class="text-red-500 text-xs font-bold tracking-widest uppercase">// HUBUNGI SAYA</span>
+          <h2 class="text-3xl sm:text-4xl font-syne font-black tracking-tight mt-2 uppercase collab-title"><span
+              class="collab-mari">Mari</span><span class="collab-berkolaborasi"> Berkolaborasi ✦</span></h2>
+        </div>
+        <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+          Terbuka untuk peluang di bidang administrasi, operasional, data, dan IT Support. Siap berkontribusi melalui
+          kemampuan teknis, ketelitian, serta pengalaman dalam pengelolaan operasional dan proyek teknologi.
+        </p>
+
+        <div class="animated-border-btn">
+          <button onclick="openContactModal()"
+            class="animated-border-btn-content px-6 py-3 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-red-600 transition duration-300">
+            <span>HUBUNGI SEKARANG</span>
+            <i class="fa-solid fa-arrow-right text-xs text-red-400"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="contact-info space-y-4 text-xs text-gray-300 lg:border-l lg:border-l-white/10 lg:pl-8">
+        <a href="mailto:mahendra284des@gmail.com" class="flex items-center gap-3 hover:text-red-400 transition">
+          <i class="fa-solid fa-envelope text-red-500 w-5"></i>
+          <span>mahendra284des@gmail.com</span>
+        </a>
+        <a href="https://instagram.com/_mahendra284" target="_blank"
+          class="flex items-center gap-3 hover:text-red-400 transition">
+          <i class="fa-brands fa-instagram text-red-500 w-5"></i>
+          <span>@_mahendra284</span>
+        </a>
+        <a href="https://github.com/mahendra284des" target="_blank"
+          class="flex items-center gap-3 hover:text-red-400 transition">
+          <i class="fa-brands fa-github text-red-500 w-5"></i>
+          <span>github.com/mahendra284des</span>
+        </a>
+        <a href="https://linkedin.com/in/mahendra-hendra-ab4185390" target="_blank"
+          class="flex items-center gap-3 hover:text-red-400 transition">
+          <i class="fa-brands fa-linkedin text-red-500 w-5"></i>
+          <span>linkedin.com/in/mahendra-hendra-ab4185390</span>
+        </a>
+        <a href="https://wa.me/6283842283634" target="_blank"
+          class="flex items-center gap-3 hover:text-red-400 transition">
+          <i class="fa-solid fa-phone text-red-500 w-5"></i>
+          <span>083842283634 (WhatsApp)</span>
+        </a>
+        <div class="flex items-center gap-3 cursor-default">
+          <i class="fa-solid fa-location-dot text-red-500 w-5"></i>
+          <span>Cirebon, Indonesia</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="max-w-7xl mx-auto px-6 pt10 pb-[440px] text-center text-xs text-zinc-500">
+    <p>STAF ADMINISTRASI • STAF OPERASIONAL • PENGELOLA DATA & LAPORAN • IT SUPPORT © 2026 MAHENDRA.</p>
+  </footer>
+
+  <!-- FLOATING DOCK DI BAWAH -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div class="floating-dock px-3 py-2 rounded-2xl flex items-center gap-3 shadow-2xl">
+      <a href="mailto:mahendra284des@gmail.com" title="Email"
+        class="w-10 h-10 rounded-xl bg-white/5 hover:bg-red-600/20 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-red-400 transition">
+        <i class="fa-solid fa-envelope text-sm"></i>
+      </a>
+      <a href="https://instagram.com/_mahendra284" target="_blank" title="Instagram"
+        class="w-10 h-10 rounded-xl bg-white/5 hover:bg-red-600/20 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-red-400 transition">
+        <i class="fa-brands fa-instagram text-sm"></i>
+      </a>
+      <a href="https://github.com/mahendra284des" target="_blank" title="GitHub"
+        class="w-10 h-10 rounded-xl bg-white/5 hover:bg-red-600/20 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-red-400 transition">
+        <i class="fa-brands fa-github text-sm"></i>
+      </a>
+      <a href="https://linkedin.com/in/mahendra-hendra-ab4185390" target="_blank" title="LinkedIn"
+        class="w-10 h-10 rounded-xl bg-white/5 hover:bg-red-600/20 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-red-400 transition">
+        <i class="fa-brands fa-linkedin text-sm"></i>
+      </a>
+      <a href="assets/CV-Mahendra.pdf" download="CV-Mahendra.pdf" title="Lihat CV"
+        class="w-10 h-10 rounded-xl bg-white/5 hover:bg-red-600/20 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-red-400 transition">
+        <i class="fa-solid fa-file-arrow-down text-sm"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- MODAL FORM KONTAK -->
+  <div id="contactModal"
+    class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div class="glass-card w-full max-w-md p-6 rounded-3xl border border-red-500/30 relative shadow-2xl space-y-4">
+      <button onclick="closeContactModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="space-y-1">
+        <h3 class="text-2xl font-syne font-black text-white tracking-tight uppercase">HUBUNGI SAYA <span
+            class="text-red-500">✦</span></h3>
+        <p class="text-xs text-gray-400">
+          Kirimkan pesan untuk kebutuhan administrasi, operasional, laporan data, IT support, atau kolaborasi pekerjaan.
+        </p>
+      </div>
+
+      <form id="connectForm" onsubmit="handleFormSubmit(event)" class="space-y-3">
+        <input type="text" id="senderName" placeholder="Nama Lengkap Anda" required
+          class="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-red-500 transition">
+        <input type="email" id="senderEmail" placeholder="Alamat Email Anda" required
+          class="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-red-500 transition">
+        <input type="tel" id="senderPhone" placeholder="Nomor WhatsApp (Contoh: 083812345678)"
+          class="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-red-500 transition">
+        <input type="text" id="subjectType" placeholder="Subjek" required
+          class="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-red-500 transition">
+        <textarea id="messageText" rows="3" placeholder="Tuliskan pesan atau detail penawaran pekerjaan..." required
+          class="w-full px-4 py-2.5 bg-black/60 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-red-500 transition"></textarea>
+
+        <button type="submit"
+          class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-red-600/30">
+          KIRIM PESAN SEKARANG 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    /* 1. KURSOR KUSTOM SPIDER-MAN */
+    const spiderCursor = document.getElementById('cursor-spider');
+    const circleCursor = document.getElementById('cursor-circle');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let cursorX = mouseX;
+    let cursorY = mouseY;
+    let moveTimeout;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      spiderCursor.style.opacity = '1';
+      circleCursor.style.opacity = '1';
+
+      clearTimeout(moveTimeout);
+      moveTimeout = setTimeout(() => {
+        spiderCursor.style.opacity = '1';
+        circleCursor.style.opacity = '0.45';
+      }, 120);
+    });
+
+    function updateCursor() {
+      // Cursor mengikuti posisi pointer secara langsung tanpa easing/lag.
+      cursorX = mouseX;
+      cursorY = mouseY;
+
+      spiderCursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+      circleCursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+
+      requestAnimationFrame(updateCursor);
+    }
+    updateCursor();
+
+    /* 2. EFEK PARTIKEL KURSOR — LEBIH RENGGANG & ELEGAN */
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    let trailParticles = [];
+
+    // Pengaturan efek partikel
+    const PARTICLE_COUNT_PER_MOVE = 1;
+    const PARTICLE_MAX = 28;
+    const PARTICLE_SPAWN_RADIUS = 22;
+    const PARTICLE_CONNECT_DISTANCE = 42;
+    const PARTICLE_LIFE = 0.035;
+
+    window.addEventListener('mousemove', (e) => {
+      for (let i = 0; i < PARTICLE_COUNT_PER_MOVE; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.random() * PARTICLE_SPAWN_RADIUS;
+
+        trailParticles.push({
+          x: e.clientX + Math.cos(angle) * radius,
+          y: e.clientY + Math.sin(angle) * radius,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
+          alpha: 0.62,
+          size: Math.random() * 1.15 + 0.65
+        });
+      }
+
+      if (trailParticles.length > PARTICLE_MAX) {
+        trailParticles.splice(0, trailParticles.length - PARTICLE_MAX);
+      }
+    });
+
+    function renderParticles() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < trailParticles.length; i++) {
+        const p = trailParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= PARTICLE_LIFE;
+
+        if (p.alpha > 0) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(239, 68, 68, ${p.alpha})`;
+          ctx.fill();
+
+          for (let j = i + 1; j < trailParticles.length; j++) {
+            const p2 = trailParticles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < PARTICLE_CONNECT_DISTANCE) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(239, 68, 68, ${Math.min(p.alpha, p2.alpha) * (1 - dist / PARTICLE_CONNECT_DISTANCE) * 0.7})`;
+              ctx.lineWidth = 0.4;
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      trailParticles = trailParticles.filter(p => p.alpha > 0);
+      requestAnimationFrame(renderParticles);
+    }
+
+    renderParticles();
+
+    /* 3. SCROLL ZOOM & NAVBAR ACTIVE + HOVER FOLLOW CURSOR */
+    const bgHero = document.getElementById('bgHero');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+    const navbar = document.querySelector('header');
+
+    let currentSection = 'about';
+    let hoveredNavTarget = null;
+    let isNavbarHovered = false;
+
+    // Mobile hamburger menu
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileNavMenu = document.getElementById('mobileNavMenu');
+    const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+
+    function closeMobileMenu() {
+      if (!mobileNavMenu || !mobileMenuButton) return;
+      mobileNavMenu.classList.add('hidden');
+      mobileMenuButton.setAttribute('aria-expanded', 'false');
+      if (mobileMenuIcon) mobileMenuIcon.className = 'fa-solid fa-bars text-sm';
+    }
+
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = mobileNavMenu.classList.contains('hidden');
+        mobileNavMenu.classList.toggle('hidden', !willOpen);
+        mobileMenuButton.setAttribute('aria-expanded', String(willOpen));
+        if (mobileMenuIcon) {
+          mobileMenuIcon.className = willOpen ? 'fa-solid fa-xmark text-sm' : 'fa-solid fa-bars text-sm';
+        }
+      });
+    }
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => closeMobileMenu());
+    });
+
+    document.addEventListener('click', (e) => {
+      if (mobileNavMenu && !mobileNavMenu.contains(e.target) && mobileMenuButton && !mobileMenuButton.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) closeMobileMenu();
+    });
+
+    function updateNavbarState() {
+      const targetSection = hoveredNavTarget || currentSection;
+
+      navLinks.forEach(link => {
+        const isActive = link.getAttribute('data-target') === targetSection;
+        link.classList.remove('bg-red-600', 'text-white', 'font-bold');
+        link.classList.add('text-gray-300');
+
+        if (isActive) {
+          link.classList.add('bg-red-600', 'text-white', 'font-bold');
+          link.classList.remove('text-gray-300');
+        }
+      });
+    }
+
+    function getPageScrollTop() {
+      // Gunakan scrollTop dari container yang benar-benar bergerak.
+      // Pada mobile file ini BODY adalah scroll container; pada desktop browser
+      // dapat menggunakan documentElement/window.
+      const bodyTop = document.body ? document.body.scrollTop : 0;
+      const docTop = document.documentElement ? document.documentElement.scrollTop : 0;
+      const winTop = window.scrollY || 0;
+
+      if (bodyTop > 0) return bodyTop;
+      if (docTop > 0) return docTop;
+      return winTop;
+    }
+
+    function detectCurrentSection() {
+      const scrollTop = getPageScrollTop();
+      const viewportMarker = window.innerHeight * 0.38;
+      let detectedSection = sections[0]?.getAttribute('id') || 'about';
+
+      // Section yang titik atasnya sudah melewati marker viewport adalah
+      // section yang sedang dibaca. Ini bekerja baik untuk desktop maupun mobile.
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= viewportMarker) {
+          detectedSection = sec.getAttribute('id');
+        }
+      });
+
+      // Ujung halaman harus selalu menunjuk section yang benar.
+      const scroller = document.body;
+      const maxScroll = Math.max(0, scroller.scrollHeight - window.innerHeight);
+      if (scrollTop <= 8) {
+        detectedSection = sections[0]?.getAttribute('id') || 'about';
+      } else if (scrollTop >= maxScroll - 8) {
+        detectedSection = sections[sections.length - 1]?.getAttribute('id') || detectedSection;
+      }
+
+      currentSection = detectedSection;
+      // Touch/mobile tidak mempunyai hover. Karena itu highlight selalu mengikuti
+      // section yang sedang terlihat. Desktop hanya memakai hoveredNavTarget saat
+      // pointer benar-benar berada di atas navbar.
+      if (window.matchMedia('(max-width: 767px)').matches || !isNavbarHovered) {
+        hoveredNavTarget = null;
+      }
+      updateNavbarState();
+    }
+
+    // Desktop: saat cursor berada di navbar, box mengikuti item yang sedang disentuh.
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        isNavbarHovered = true;
+        hoveredNavTarget = link.getAttribute('data-target');
+        updateNavbarState();
+      });
+    });
+
+    // Klik menu: langsung beri efek pada item yang diklik, lalu scroll ke section.
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = link.getAttribute('data-target');
+        const targetSection = document.getElementById(target);
+        if (!targetSection) return;
+
+        e.preventDefault();
+        currentSection = target;
+        hoveredNavTarget = target;
+        updateNavbarState();
+
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Setelah perpindahan selesai, kembali ke state section sebenarnya.
+        clearTimeout(window.__navScrollTimer);
+        window.__navScrollTimer = setTimeout(() => {
+          isNavbarHovered = false;
+          hoveredNavTarget = null;
+          detectCurrentSection();
+        }, 750);
+      });
+    });
+
+    navbar.addEventListener('mouseenter', () => {
+      isNavbarHovered = true;
+      // Jangan mengubah target di sini; target berubah hanya saat pointer
+      // benar-benar menyentuh item navbar.
+      updateNavbarState();
+    });
+
+    navbar.addEventListener('mouseleave', () => {
+      isNavbarHovered = false;
+      hoveredNavTarget = null;
+      updateNavbarState();
+    });
+
+    let scrollTicking = false;
+
+    function handleScroll() {
+      const scrollY = getPageScrollTop();
+
+      // Zoom background mengikuti posisi scroll halaman.
+      // Di paling atas = 1x. Semakin ke bawah = semakin zoom,
+      // dengan titik fokus tetap berada di area wajah.
+      const scroller = document.body;
+      const maxScroll = Math.max(1, scroller.scrollHeight - window.innerHeight);
+      const scrollProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+      const scale = 1 + (scrollProgress * 0.55);
+
+      bgHero.style.transform = `scale(${scale})`;
+      detectCurrentSection();
+      scrollTicking = false;
+    }
+
+    function requestScrollUpdate() {
+      if (!scrollTicking) {
+        requestAnimationFrame(handleScroll);
+        scrollTicking = true;
+      }
+    }
+
+    // Revisi penting: pada layout mobile, BODY adalah scroll container.
+    // Karena itu event scroll harus dipasang langsung ke BODY, bukan hanya WINDOW.
+    // Desktop tetap mendengarkan WINDOW untuk browser yang memakai document scrolling.
+    window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+    document.body.addEventListener('scroll', requestScrollUpdate, { passive: true });
+    document.documentElement.addEventListener('scroll', requestScrollUpdate, { passive: true });
+
+    // Pastikan resize/orientasi juga langsung menghitung section yang terlihat.
+    window.addEventListener('resize', requestScrollUpdate, { passive: true });
+    window.addEventListener('orientationchange', requestScrollUpdate, { passive: true });
+
+    // Body adalah area scroll utama. Jangan memaksa wheel/touch dengan preventDefault.
+    document.body.style.overscrollBehaviorY = 'none';
+    handleScroll();
+
+    /* 4. ROTASI TEKS POSISI PADA ID CARD (DISESUAIKAN UKURANNYA AGAR TIDAK TERPOTONG) */
+    const rolesList = [
+      "Staff Administrasi",
+      "Staff Operasional",
+      "Report Specialist",
+      "Data Entry Staff",
+      "Office Coordinator",
+      "IT Support",
+      "Inventory & Purchasing"
+    ];
+    let roleIndex = 0;
+    const roleTextElement = document.getElementById('rotatingRoleText');
+
+    setInterval(() => {
+      roleTextElement.style.opacity = '0';
+      roleTextElement.style.transform = 'translateY(10px) rotate(-3deg)';
+      setTimeout(() => {
+        roleIndex = (roleIndex + 1) % rolesList.length;
+        roleTextElement.textContent = rolesList[roleIndex];
+
+        // Menyesuaikan ukuran font secara dinamis jika teksnya panjang agar pas di dalam kartu
+        if (rolesList[roleIndex].length > 18) {
+          roleTextElement.style.fontSize = '18px';
+        } else {
+          roleTextElement.style.fontSize = '21px';
+        }
+
+        roleTextElement.style.opacity = '1';
+        roleTextElement.style.transform = 'translateY(0px) rotate(-3deg)';
+      }, 300);
+    }, 2800);
+
+    /* 5. MODAL KONTROL & WHATSAPP */
+    const modal = document.getElementById('contactModal');
+    function openContactModal() {
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    }
+    function closeContactModal() {
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('senderName').value;
+      const email = document.getElementById('senderEmail').value;
+      const phone = document.getElementById('senderPhone').value;
+      const subject = document.getElementById('subjectType').value;
+      const message = document.getElementById('messageText').value;
+
+      const waText = `Halo Mahendra,%0A%0A*Nama:* ${encodeURIComponent(name)}%0A*Email:* ${encodeURIComponent(email)}%0A*No HP:* ${encodeURIComponent(phone)}%0A*Posisi/Subjek:* ${encodeURIComponent(subject)}%0A%0A*Pesan:*%0A${encodeURIComponent(message)}`;
+      window.open(`https://wa.me/6283842283634?text=${waText}`, '_blank');
+      closeContactModal();
+    }
+
+    /* 6. FISIKA LANYARD & TEKS BERKELANJUTAN */
+    const cardWrapper = document.getElementById('dragCardWrapper');
+    const lanyardStrap = document.getElementById('lanyardStrap');
+    const lanyardLetters = document.getElementById('lanyardLetters');
+
+    const sequenceLetters = ['M', 'A', 'H', 'E', 'N', 'D', 'R', 'A', '•'];
+
+    function updateLanyardText(strapLength) {
+      let count = Math.floor(strapLength / 7);
+      if (count < 8) count = 8;
+
+      let html = '';
+      for (let i = 0; i < count; i++) {
+        let char = sequenceLetters[i % sequenceLetters.length];
+        html += `<span class="text-[7px] font-syne font-black text-white tracking-widest leading-none">${char}</span>`;
+      }
+      lanyardLetters.innerHTML = html;
+    }
+    updateLanyardText(75);
+
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let currentX = 0, currentY = 0;
+    const baseStrapHeight = 75;
+
+    cardWrapper.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      isDragging = true;
+      startX = e.clientX - currentX;
+      startY = e.clientY - currentY;
+      cardWrapper.classList.remove('swing-card');
+      cardWrapper.style.transition = 'none';
+      lanyardStrap.style.transition = 'none';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      currentX = e.clientX - startX;
+      currentY = e.clientY - startY;
+
+      if (currentY < -25) currentY = -25;
+
+      const targetY = baseStrapHeight + currentY;
+      const distance = Math.sqrt(currentX * currentX + targetY * targetY);
+
+      updateLanyardText(distance);
+
+      const rotateDeg = currentX * 0.05;
+      cardWrapper.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotateDeg}deg)`;
+
+      const angleRad = Math.atan2(currentX, targetY);
+      const angleDeg = -angleRad * (180 / Math.PI);
+
+      lanyardStrap.style.height = `${distance}px`;
+      lanyardStrap.style.transform = `rotate(${angleDeg}deg)`;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+
+      cardWrapper.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      cardWrapper.style.transform = 'translate(0px, 0px) rotate(0deg)';
+
+      lanyardStrap.style.transition = 'height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      lanyardStrap.style.height = `${baseStrapHeight}px`;
+      lanyardStrap.style.transform = 'rotate(0deg)';
+
+      updateLanyardText(baseStrapHeight);
+
+      currentX = 0;
+      currentY = 0;
+
+      setTimeout(() => {
+        cardWrapper.classList.add('swing-card');
+      }, 500);
+    });
+  </script>
+
+</body>
+
+</html>
