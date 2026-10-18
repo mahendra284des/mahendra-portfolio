@@ -2980,15 +2980,21 @@
       }, 300);
     }, 2800);
 
-    /* 5. MODAL KONTROL & WHATSAPP */
-    const modal = document.getElementById('contactModal');
+    //* 5. MODAL KONTROL & WHATSAPP */
     function openContactModal() {
-      modal.classList.remove('hidden');
-      setTimeout(() => modal.classList.remove('opacity-0'), 10);
+      const modal = document.getElementById('contactModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        setTimeout(() => modal.classList.remove('opacity-0'), 10);
+      }
     }
+
     function closeContactModal() {
-      modal.classList.add('opacity-0');
-      setTimeout(() => modal.classList.add('hidden'), 300);
+      const modal = document.getElementById('contactModal');
+      if (modal) {
+        modal.classList.add('opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+      }
     }
 
     function handleFormSubmit(e) {
