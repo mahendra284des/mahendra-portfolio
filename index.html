@@ -2596,7 +2596,7 @@
   </div>
 
   <!-- MODAL FORM KONTAK -->
-  <div id="contactModalDukungan IT & Pemeliharaan Sistem"
+  <div id="contactModal"
     class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
     <div class="glass-card w-full max-w-md p-6 rounded-3xl border border-red-500/30 relative shadow-2xl space-y-4">
       <button onclick="closeContactModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
@@ -2980,21 +2980,15 @@
       }, 300);
     }, 2800);
 
-    //* 5. MODAL KONTROL & WHATSAPP */
+    /* 5. MODAL KONTROL & WHATSAPP */
+    const modal = document.getElementById('contactModal');
     function openContactModal() {
-      const modal = document.getElementById('contactModal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        setTimeout(() => modal.classList.remove('opacity-0'), 10);
-      }
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.remove('opacity-0'), 10);
     }
-
     function closeContactModal() {
-      const modal = document.getElementById('contactModal');
-      if (modal) {
-        modal.classList.add('opacity-0');
-        setTimeout(() => modal.classList.add('hidden'), 300);
-      }
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 300);
     }
 
     function handleFormSubmit(e) {
